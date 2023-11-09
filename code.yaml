@@ -1,0 +1,43 @@
+# Jenkinsfile (Pipeline script)
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out the source code from your version control system
+                checkout scm
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Build the Docker image for the web application
+                sh 'docker build -t my-web-app .'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // You can add testing steps here
+                // For example: sh 'docker run my-web-app npm test'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy the Docker container to a production environment
+                sh 'docker run -d -p 80:80 --name my-web-app-container my-web-app'
+            }
+        }
+    }
+    
+    post {
+        success {
+            // Notify or perform additional tasks on successful deployment
+        }
+        failure {
+            // Notify or perform actions in case of failure
+        }
+    }
+}
